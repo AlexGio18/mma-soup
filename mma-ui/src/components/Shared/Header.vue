@@ -1,14 +1,27 @@
 <template>
     <div>
     <v-toolbar
-      dense
       color="blue-grey darken-4"
       dark
+      dense
     >
         <v-toolbar-title>MMA Soup</v-toolbar-title>
 
-
         <v-spacer></v-spacer>
+
+        <v-flex class="mt-2 relative" fill-height>
+            <v-text-field
+                ref="searchInput"
+                v-model="search"
+                dense
+                flat
+                solo
+                append-icon="mdi-magnify"
+                label="Search..."
+                class="input-radius"
+            >
+            </v-text-field>
+        </v-flex>
     </v-toolbar>
 
     <v-app-bar
@@ -19,11 +32,11 @@
         height="30"
         :style="{ top: distance+'px'}"
     >
-        <div class="d-flex align-center px-12">
-          <router-link class="link" to="/">Home</router-link>
+        <div class="d-flex align-center">
+          <router-link class="link px-12" to="/">Home</router-link>
         </div>
-        <div class="d-flex align-center px-12">
-          <router-link class="link" to="/about">About</router-link>
+        <div class="d-flex align-center">
+          <router-link class="link px-12" to="/about">About</router-link>
         </div>
     </v-app-bar>
     </div>
@@ -32,10 +45,12 @@
 <script>
 export default {
     data: () => ({
-        distance: 48
+        distance: 48,
+        search: ''
     }),
     created () {
         window.addEventListener('scroll', this.handleScroll);
+        this.distance = 48 - window.scrollY
     },
     destroyed () {
         window.removeEventListener('scroll', this.handleScroll);
@@ -47,7 +62,7 @@ export default {
             } else if (window.scrollY === 0) {
                 this.distance = 48
             } else {
-                this.distance = this.distance - window.scrollY
+                this.distance = 48 - window.scrollY
             }
         }
      }
@@ -60,5 +75,10 @@ export default {
         font-weight: bold;
         font-size: 0.9em;
         color: #777;
+        border-radius: 4px;
+    }
+
+    .link:hover {
+        background-color: rgb(225, 225, 225);
     }
 </style>

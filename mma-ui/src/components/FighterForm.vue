@@ -1,28 +1,35 @@
 <template>
-    <v-container>
-        <form>
-            <v-row no-gutters>
-                <v-col :cols="info.cols" class="px-6" v-for="info in fighterForm" :key="info.label">
-                    <v-text-field
-                        v-model="info.value"
-                        :label="info.label"
-                        dense
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                    <v-btn
-                        class="mr-4"
-                        @click="submit"
-                        >
-                        submit
-                        </v-btn>
-                        <v-btn @click="clear">
-                        clear
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </form>
-    </v-container>
+    <v-expansion-panels accordion flat>
+        <v-expansion-panel>
+            <v-expansion-panel-header>UPDATE FIGHTER</v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <v-container>
+                    <form>
+                        <v-row no-gutters>
+                            <v-col :cols="info.cols" class="px-6" v-for="info in fighterForm" :key="info.label">
+                                <v-text-field
+                                    v-model="info.value"
+                                    :label="info.label"
+                                    dense
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-btn
+                                    class="mr-4"
+                                    @click="submit"
+                                    >
+                                    submit
+                                    </v-btn>
+                                    <v-btn @click="clear">
+                                    clear
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </form>
+                </v-container>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </template>
 
 <script>
@@ -66,9 +73,6 @@ export default {
     }),
     methods: {
         async submit () {
-            // this.$v.$touch
-            // console.log(this.$v)
-            //console.log(this.fighterForm)
            const new_fighter = await api.updatefighter(this.fighter._id, this.fighterForm)
            console.log(new_fighter)
         },
@@ -105,7 +109,8 @@ export default {
                 loss_decs: { label: 'Losses (Decision)', value: this.fighter.loss_decs, cols: '2' },
                 loss_ko: { label: 'Losses (KO/TKO)', value: this.fighter.loss_ko, cols: '2' },
                 loss_subs: { label: 'Losses (submission)', value: this.fighter.loss_subs, cols: '2' },
-                loss_others: { label: 'Losses (other)', value: this.fighter.loss_others, cols: '2' }
+                loss_others: { label: 'Losses (other)', value: this.fighter.loss_others, cols: '2' },
+                ranking: { label: 'Ranking', value: this.fighter.ranking, cols: '2' }
             }
         }
     },
