@@ -88,9 +88,11 @@ exports.read_a_fighter = (req, res) => {
 };
 
 exports.update_a_fighter = (req, res) => {
+  console.log(req.params.fighterId)
+  console.log(req.body)
   fighter.findOneAndUpdate(
     { _id: req.params.fighterId },
-    req.body,
+    { '$set': req.body },
     { new: true },
     (err, fighter) => {
       if (err) res.send(err);

@@ -19,6 +19,8 @@ const fightSchema = new Schema(
 const fighterSchema = new Schema(
   {
     name: String,
+    nickname: String,
+    style: String,
     born: String,
     city: String,
     country: String,
@@ -28,8 +30,10 @@ const fighterSchema = new Schema(
     weight_lbs: Number,
     weight_kgs: Number,
     weight_class: String,
+    reach_inch: String,
     wins: Number,
     losses: Number,
+    draws: Number,
     win_ko: Number,
     win_subs: Number,
     win_decs: Number,

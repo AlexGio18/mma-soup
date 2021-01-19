@@ -21,7 +21,6 @@ const handleError = fn => (...params) =>
 
 export const api = {
   getfighter: handleError(async id => {
-      console.log(id)
     const res = await axios.get(baseURL + id);
     return res.data;
   }),
@@ -41,8 +40,12 @@ export const api = {
     const res = await axios.post(baseURL, payload);
     return res.data;
   }),
-  updatefighter: handleError(async payload => {
-    const res = await axios.put(baseURL + payload._id, payload);
+  updatefighter: handleError(async (id, payload) => {
+    const updates = {}
+    for (var k in payload) {
+        updates[k] = payload[k].value
+    }
+    const res = await axios.put(baseURL + id, updates);
     return res.data;
   })
 };
