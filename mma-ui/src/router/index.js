@@ -22,6 +22,11 @@ const routes = [
     path: '/fighters/:fighterId',
     name: 'Fighter',
     component: () => import('../views/Fighter.vue')
+  },
+  {
+    path: '/add/fighter',
+    name: 'Add a Fighter',
+    component: () => import('../views/AddFighter.vue')
   }
 ]
 

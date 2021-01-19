@@ -24,6 +24,7 @@ const fighterSchema = new Schema(
     born: String,
     city: String,
     country: String,
+    image_link: String,
     association: String,
     height_inch: Number,
     height_cm: Number,

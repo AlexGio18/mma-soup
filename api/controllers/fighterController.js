@@ -74,6 +74,7 @@ exports.top_10_flyweight = (req, res) => {
 
 exports.create_a_fighter = (req, res) => {
   const newfighter = new fighter(req.body);
+  console.log(newfighter)
   newfighter.save((err, fighter) => {
     if (err) res.send(err);
     res.json(fighter);
@@ -94,15 +95,13 @@ exports.search_a_fighter = (req, res) => {
     .sort( { score: { $meta: "textScore" } })
     .exec( (err, fighters) => {
       if (err) res.send(err);
-      res.json(fighters);
+        res.json(fighters);
     }
   );
 };
   
 
 exports.update_a_fighter = (req, res) => {
-  console.log(req.params.fighterId)
-  console.log(req.body)
   fighter.findOneAndUpdate(
     { _id: req.params.fighterId },
     { '$set': req.body },

@@ -19,9 +19,6 @@
                                     @click="submit"
                                     >
                                     submit
-                                    </v-btn>
-                                    <v-btn @click="clear">
-                                    clear
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -115,7 +112,7 @@ export default {
         }
     },
     mounted () {
-       this.loadForm()
+        this.loadForm()
     }
 }
 </script>

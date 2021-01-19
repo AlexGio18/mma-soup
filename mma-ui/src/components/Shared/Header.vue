@@ -1,9 +1,14 @@
 <template>
     <div>
-    <v-toolbar
-      color="blue-grey darken-4"
-      dark
-      dense
+    <v-app-bar
+        app
+        color="blue-grey darken-4"
+        dark
+        dense
+        absolute
+        flat
+        width="100%"
+        style="z-index: 10"
     >
         <v-toolbar-title>MMA Soup</v-toolbar-title>
 
@@ -11,24 +16,43 @@
 
         <v-flex class="mt-2 relative" fill-height>
             <v-card>
-            <v-autocomplete
-                ref="searchInput"
-                v-model="searchModel"
-                :items="fighters"
-                :search-input.sync="search"
-                :loading="isLoading"
-                dense
-                flat
-                solo
-                hide-no-data
-                append-icon="mdi-magnify"
-                label="Search..."
-                class="input-radius"
-            >
-            </v-autocomplete>
+                <v-autocomplete
+                    ref="searchInput"
+                    v-model="searchModel"
+                    :items="fighters"
+                    :search-input.sync="search"
+                    :loading="isLoading"
+                    dense
+                    flat
+                    solo
+                    hide-no-data
+                    hide-details
+                    hide-selected
+                    append-icon="mdi-magnify"
+                    label="Search..."
+                    class="input-radius"
+                >
+                </v-autocomplete>
+                <v-divider></v-divider>
+                <v-expand-transition>
+                    <v-list v-if="fighters.length > 0">
+                        <v-list-item
+                            v-for="(f, i) in fighters"
+                            :key="i"
+                            :href="'/fighters/'+ f._id"
+                        >
+                        <v-list-item-avatar>
+                            <v-img :src="f.image_link"></v-img>
+                        </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title> {{ f.name }} </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-expand-transition>
             </v-card>
         </v-flex>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-app-bar
         app
@@ -42,7 +66,7 @@
           <router-link class="link px-12" to="/">Home</router-link>
         </div>
         <div class="d-flex align-center">
-          <router-link class="link px-12" to="/about">About</router-link>
+          <router-link class="link px-12" to="/add/fighter">Add Fighter</router-link>
         </div>
     </v-app-bar>
     </div>
@@ -78,22 +102,33 @@ export default {
         }
      },
      watch: {
-         search (val) {
-            console.log(val)
-            if (val !== null && val.length > 2) {
+        search (val) {
+            if (val === null) { 
+                this.fighters = []
+                return 
+            }
+
+            if (val.length > 2) {
                 this.isLoading = true
                 api.searchfighter(val).then( res => {
-                    this.isLoading = false
-                    console.log(res)
+                    if (Array.isArray(res)) {
+                        this.fighters = res
+                    } else {
+                        this.fighters = []
+                    }
                 })
+                .finally(() => (this.isLoading = false))
             }
-            
-         }
+        }
      }
 }
 </script>
 
 <style lang="scss" scoped>
+    .v-text-field__details {
+        display: none;
+    }
+
     .link {
         text-decoration: none;
         font-weight: bold;

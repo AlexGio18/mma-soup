@@ -42,7 +42,15 @@ export const api = {
     return res.data;
   }),
   createfighter: handleError(async payload => {
-    const res = await axios.post(baseURL, payload);
+    const new_fighter = {}
+    for (var k in payload) {
+      new_fighter[k] = payload[k].value
+    }
+
+    new_fighter['professional_record'] = []
+    new_fighter['amateur_record'] = []
+    console.log(new_fighter)
+    const res = await axios.post(baseURL, new_fighter);
     return res.data;
   }),
   updatefighter: handleError(async (id, payload) => {
