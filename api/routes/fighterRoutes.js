@@ -43,4 +43,8 @@ module.exports = app => {
     .get(fighterBuilder.read_a_fighter)
     .put(fighterBuilder.update_a_fighter)
     .delete(fighterBuilder.delete_a_fighter);
+
+  app
+    .route('/fighters/search/:searchText')
+    .get(fighterBuilder.search_a_fighter);
 };

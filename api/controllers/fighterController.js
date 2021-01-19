@@ -87,6 +87,19 @@ exports.read_a_fighter = (req, res) => {
   });
 };
 
+exports.search_a_fighter = (req, res) => {
+  fighter.find(
+    { $text: { $search: req.params.searchText } },
+    { score: { $meta: "textScore" } })
+    .sort( { score: { $meta: "textScore" } })
+    .exec( (err, fighters) => {
+      if (err) res.send(err);
+      res.json(fighters);
+    }
+  );
+};
+  
+
 exports.update_a_fighter = (req, res) => {
   console.log(req.params.fighterId)
   console.log(req.body)

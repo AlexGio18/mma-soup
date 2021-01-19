@@ -49,4 +49,6 @@ const fighterSchema = new Schema(
   { collection: 'fighters' }
 );
 
+fighterSchema.index({name: 'text'})
+
 module.exports = mongoose.model('fighters', fighterSchema);

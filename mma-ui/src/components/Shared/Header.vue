@@ -10,17 +10,23 @@
         <v-spacer></v-spacer>
 
         <v-flex class="mt-2 relative" fill-height>
-            <v-text-field
+            <v-card>
+            <v-autocomplete
                 ref="searchInput"
-                v-model="search"
+                v-model="searchModel"
+                :items="fighters"
+                :search-input.sync="search"
+                :loading="isLoading"
                 dense
                 flat
                 solo
+                hide-no-data
                 append-icon="mdi-magnify"
                 label="Search..."
                 class="input-radius"
             >
-            </v-text-field>
+            </v-autocomplete>
+            </v-card>
         </v-flex>
     </v-toolbar>
 
@@ -43,10 +49,15 @@
 </template>
 
 <script>
+import { api } from '@/helpers/fighters'
+
 export default {
     data: () => ({
         distance: 48,
-        search: ''
+        searchModel: null,
+        isLoading: false,
+        search: '',
+        fighters: []
     }),
     created () {
         window.addEventListener('scroll', this.handleScroll);
@@ -65,6 +76,19 @@ export default {
                 this.distance = 48 - window.scrollY
             }
         }
+     },
+     watch: {
+         search (val) {
+            console.log(val)
+            if (val !== null && val.length > 2) {
+                this.isLoading = true
+                api.searchfighter(val).then( res => {
+                    this.isLoading = false
+                    console.log(res)
+                })
+            }
+            
+         }
      }
 }
 </script>
@@ -80,5 +104,9 @@ export default {
 
     .link:hover {
         background-color: rgb(225, 225, 225);
+    }
+
+    .input-radius {
+        border-radius: 25px;
     }
 </style>

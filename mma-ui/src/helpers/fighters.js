@@ -32,6 +32,11 @@ export const api = {
       const res = await axios.get(baseURL + 'top-10-' + div);
       return res.data
   }),
+  searchfighter: handleError(async text => {
+      console.log(text)
+      const res = await axios.get(baseURL+ 'search/' + text);
+      return res.data
+  }),
   deletefighter: handleError(async id => {
     const res = await axios.delete(baseURL + id);
     return res.data;
