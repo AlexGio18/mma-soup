@@ -26,20 +26,61 @@
                 </v-container>
             </v-expansion-panel-content>
         </v-expansion-panel>
+        <v-expansion-panel>
+            <v-expansion-panel-header>UPLOAD FIGHTER JSON</v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <v-container>
+                    <v-row no-gutters>
+                        <v-col cols="12">
+                            <v-file-input
+                                v-model="files"
+                                label="File input"
+                                multiple
+                                prepend-icon="mdi-paperclip"
+                            >
+                                <template v-slot:selection="{ text }">
+                                    <v-chip
+                                        small
+                                        label
+                                        color="primary"
+                                    >
+                                        {{ text }}
+                                    </v-chip>
+                                </template>
+                            </v-file-input>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-btn
+                                class="mr-4"
+                                @click="submitJson"
+                                >
+                                SUBMIT
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
     </v-expansion-panels>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { api } from '@/helpers/fighters'
+import UploadFilesService from '@/services/uploadFilesService'
 // import { required, maxLength, email } from 'vuelidate/lib/validators'
 
 export default {
     props: {
-        fighter: Object
+        fighter: Object,
     },
     mixins: [validationMixin],
     data: () => ({
+        currentFile: undefined,
+        files: [],
+        readers: [],
+        progres: 0,
+        fighter_json: {},
         fighterForm: {
             name: { label: 'Name', value: '' },
             nickname: { label: 'Nickname', value: '' },
@@ -70,8 +111,36 @@ export default {
     }),
     methods: {
         async submit () {
-           const new_fighter = await api.updatefighter(this.fighter._id, this.fighterForm)
-           console.log(new_fighter)
+            const new_fighter = await api.updatefighter(this.fighter._id, this.fighterForm)
+            console.log(new_fighter)
+        },
+        selectFile (file) {
+            this.progress = 0;
+            this.currentFile = file;
+        },
+        uploadJsonFile () {
+            if (!this.currentFile) {
+                return;
+            }
+
+            UploadFilesService.upload(this.currentFile, (event) => {
+                this.progress = Math.round((100 * event.loaded) / event.total);
+            })
+            .then((response) => {
+                console.log(response)
+            })
+        },
+        submitJson () {
+            console.log(this.files)
+            this.files.forEach((file, f) => {
+                this.readers[f] = new FileReader()
+                console.log(this.readers[f])
+                this.readers[f].onload = (e) => {
+                    console.log(e.target.result)   
+                    //const fileText = reader.readAsText(file) 
+                    //  console.log(fileText)
+                }
+           })
         },
         clear () {
             // this.$v.$reset()
