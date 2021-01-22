@@ -180,7 +180,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody v-if="record.length > 0">
+                <tbody v-if="fighterRecord.length > 0">
                     <tr
                         v-for="(item, index) in record"
                         :key="index"
@@ -211,6 +211,7 @@ export default {
         record_type: String
     },
     data: () => ({
+        fighterRecord: [],
         dialog: false,
         recordAdd: {
             event_date: '',
@@ -234,6 +235,24 @@ export default {
             const fighter = await api.updateFighterRecord(this.$route.params.fighterId, this.record_type, this.recordAdd)
             console.log(fighter)
         }
-    }
+    },
+    mounted() {
+        this.fighterRecord = this.record
+        console.log(this.fighterRecord)
+        for (var i = 0; i < this.fighterRecord.length; i++) {
+            const rec = this.fighterRecord[i]
+            const recDate = new Date(rec.event_date)
+            let j = i - 1
+            let recToComp = this.fighterRecord[j]
+            while (j >= 0 && ((new Date(recToComp.event_date)) < recDate)) {
+                this.fighterRecord[j + 1] = recToComp
+                j = j - 1
+                recToComp = this.fighterRecord[j]
+            }
+            this.fighterRecord[j + 1] = rec
+        }
+
+        console.log(this.fighterRecord)
+    },
 }
 </script>

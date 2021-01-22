@@ -82,7 +82,7 @@ exports.create_a_fighter = (req, res) => {
 };
 
 exports.read_a_fighter = (req, res) => {
-  fighter.findById(req.params.fighterId, (err, fighter) => {
+  fighter.findById(req.params.fighterId, async (err, fighter) => {
     if (err) res.send(err);
     res.json(fighter);
   });

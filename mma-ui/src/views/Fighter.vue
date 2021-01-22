@@ -1,7 +1,7 @@
 <template>
     <v-container fluid>
         <div v-if="fighter != null">
-            <h1>{{ fighter.name }}</h1>
+            <fighter-profile :fighter="fighter"></fighter-profile>
             <fighter-form :fighter="fighter"></fighter-form>
             <record-table
                 v-if="fighter.professional_record.length > 0"  
@@ -22,11 +22,13 @@
 import { api } from '@/helpers/fighters'
 import RecordTable from '@/components/RecordTable'
 import FighterForm from '@/components/FighterForm'
+import FighterProfile from '@/components/FighterProfile'
 
 export default {
     components: {
         'record-table': RecordTable,
-        'fighter-form': FighterForm
+        'fighter-form': FighterForm,
+        'fighter-profile': FighterProfile
     },
     data: () => ({
         fighter: null
