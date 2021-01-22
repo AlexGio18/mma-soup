@@ -61,6 +61,10 @@ export const api = {
     const res = await axios.put(baseURL + id, updates);
     return res.data;
   }),
+  updateFighterJson: handleError(async (id, payload) => {
+    const res = await axios.put(baseURL + id, payload);
+    return res.data;
+  }),
   updateFighterRecord: handleError(async (id, type, payload) => {
     console.log(id)
     console.log(payload)

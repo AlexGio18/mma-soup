@@ -166,7 +166,7 @@
                         <th class="text-left">
                             Event
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Result
                         </th>
                         <th class="text-left">
@@ -186,9 +186,9 @@
                         :key="index"
                     >
                         <td>{{ item.event_date }}</td>
-                        <td>{{ item.opponent }}</td>
-                        <td>{{ item.event }}</td>
-                        <td>{{ item.result }}</td>
+                        <td><a :href="item.opponent_link">{{ item.opponent }}</a></td>
+                        <td><a :href="item.event_link">{{ item.event }}</a></td>
+                        <td class="text-center">{{ fightResult(item.result) }}</td>
                         <td>
                             {{ item.method }} <br />
                             {{ item.referee }}
@@ -234,6 +234,10 @@ export default {
             console.log(this.recordAdd)
             const fighter = await api.updateFighterRecord(this.$route.params.fighterId, this.record_type, this.recordAdd)
             console.log(fighter)
+        },
+        fightResult (result) {
+            const letter = result.charAt(0).toUpperCase()
+            return letter
         }
     },
     mounted() {

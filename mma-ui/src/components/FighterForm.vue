@@ -33,7 +33,7 @@
                     <v-row no-gutters>
                         <v-col cols="12">
                             <v-file-input
-                                v-model="files"
+                                v-model="currentFile"
                                 label="File input"
                                 multiple
                                 prepend-icon="mdi-paperclip"
@@ -76,10 +76,11 @@ export default {
     },
     mixins: [validationMixin],
     data: () => ({
-        currentFile: undefined,
+        currentFile: null,
+        message: null,
         files: [],
         readers: [],
-        progres: 0,
+        progress: 0,
         fighter_json: {},
         fighterForm: {
             name: { label: 'Name', value: '' },
@@ -131,23 +132,17 @@ export default {
             })
         },
         submitJson () {
-            console.log(this.files)
-            this.files.forEach((file, f) => {
-                this.readers[f] = new FileReader()
-                console.log(this.readers[f])
-                this.readers[f].onload = (e) => {
-                    console.log(e.target.result)   
-                    //const fileText = reader.readAsText(file) 
-                    //  console.log(fileText)
-                }
-           })
-        },
-        clear () {
-            // this.$v.$reset()
-            // this.name = ''
-            // this.email = ''
-            // this.select = null
-            // this.checkbox = false
+            if (!this.currentFile) { this.message = "No File Chosen" }
+            var reader = new FileReader();
+            
+            // Use the javascript reader object to load the contents
+            // of the file in the v-model prop
+            reader.readAsText(this.currentFile[0]);
+            reader.onload = async () => {
+                this.message = JSON.parse(reader.result)
+                const new_fighter = await api.updateFighterJson(this.fighter._id, this.message)
+                console.log(new_fighter)
+            }
         },
         loadForm () {
             this.fighterForm = {
