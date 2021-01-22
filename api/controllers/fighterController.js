@@ -113,6 +113,28 @@ exports.update_a_fighter = (req, res) => {
   );
 };
 
+exports.update_fighter_record = (req, res) => {
+  fighter.findOne({ _id: req.params.fighterId })
+    .exec( (err, fighter) => {
+      if (err) res.send(err)
+      console.log(req.params.recordType)
+     // console.log(fighter)
+      if (req.params.recordType === 'Professional') {
+        console.log(req.body)
+        fighter.professional_record.push(req.body)
+      }
+
+      fighter.save().then(fighter => {
+        res.json({
+          message: 'Successfully added fight to ' + req.params.recordType + ' record',
+          record: req.body
+        })
+      })
+      
+    })
+
+}
+
 exports.delete_a_fighter = (req, res) => {
   fighter.deleteOne({ _id: req.params.fighterId }, err => {
     if (err) res.send(err);

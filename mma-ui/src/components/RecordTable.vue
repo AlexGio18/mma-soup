@@ -41,7 +41,7 @@
                                                 md="4"
                                             >
                                                 <v-text-field
-                                                v-model="recordAdd.date"
+                                                v-model="recordAdd.event_date"
                                                 label="Event Date"
                                                 ></v-text-field>
                                             </v-col>
@@ -202,6 +202,8 @@
     </div>
 </template>
 <script>
+import { api } from '@/helpers/fighters'
+
 export default {
     name:  'RecordTable',
     props: {
@@ -227,8 +229,10 @@ export default {
         close () {
             this.dialog = false
         },
-        save () {
+        async save () {
             console.log(this.recordAdd)
+            const fighter = await api.updateFighterRecord(this.$route.params.fighterId, this.record_type, this.recordAdd)
+            console.log(fighter)
         }
     }
 }

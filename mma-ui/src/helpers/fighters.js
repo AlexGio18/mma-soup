@@ -60,5 +60,13 @@ export const api = {
     }
     const res = await axios.put(baseURL + id, updates);
     return res.data;
+  }),
+  updateFighterRecord: handleError(async (id, type, payload) => {
+    console.log(id)
+    console.log(payload)
+    console.log(type)
+    console.log(baseURL+id+'/'+type)
+    const res = await axios.put(baseURL + id + '/' + type, payload) 
+    return res.data
   })
 };
